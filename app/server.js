@@ -60,7 +60,7 @@ module.exports = class Application {
     createRoutes(){
         this.#app.get("/", (req, res, next) => {
             return res.json({
-                message : "This the new express application."
+                message : "This is the new express application."
             })
         })
     }
