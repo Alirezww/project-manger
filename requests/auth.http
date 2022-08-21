@@ -1,0 +1,11 @@
+###register request
+Post http://localhost:4000/auth/register
+Content-Type: application/json
+
+{
+    "username" : "alirezaw",
+    "email" : "erfanusefi@google.com",
+    "mobile" : "09332255267",
+    "password" : "12345678",
+    "confirm_password" : "12345678"
+}
