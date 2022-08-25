@@ -60,6 +60,27 @@ function registerValidator() {
     ]
 }
 
+function loginValidator(){
+    return [
+        body('username')
+            .notEmpty().withMessage("نام کاربری نمی تواند خالی باشد.")
+
+            .custom(async(username) => {
+                if(username){
+                    const usernameRegex = /^[a-z]+[a-z0-9\_\.]{2,}/gi
+                    if(usernameRegex.test(username)){
+                        return true
+                    }
+                    throw "نام کاربری صحیح نمی باشد."
+                }
+            }),
+
+        body("password")
+            .isLength({ min : 8, max : 18 })
+            .withMessage("نام کاربری نمیتواند کمتر از 8 کاراکتر و بیشتر از 18 کاراکتر باشد.")
+    ]
+}
 module.exports = {
-    registerValidator
+    registerValidator,
+    loginValidator
 }
