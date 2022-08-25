@@ -1,5 +1,5 @@
 const { UserModel } = require("../../models/User")
-const { hashString } = require("../../modules/functions")
+const { hashString, tokenGenerator } = require("../../modules/functions")
 
 const bcrypt = require("bcrypt")
 
@@ -22,15 +22,22 @@ class AuthController {
 
     async login(req, res, next){
         try{
+            console.log(req.headers)
             const { username, password } = req.body
             const user = await UserModel.findOne({ username });
             if(!user) throw {status : 401,message : 'نام کاربری یا رمز عبور غلط می باشد.' };
             const compareResult = bcrypt.compareSync(password, user.password);
             if(!compareResult) throw {status : 401,message : 'نام کاربری یا رمز عبور غلط می باشد.' };
+            const token = tokenGenerator({ username });
+
+            user.token = token;
+            await user.save()
+
             return res.status(200).json({
                 status : 200,
                 success : true,
-                message : 'شما با موفقیت وارد حساب کاربری خود شدید.'
+                message : 'شما با موفقیت وارد حساب کاربری خود شدید.',
+                token : token
             })
         }catch(err){
             next(err)
