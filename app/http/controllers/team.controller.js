@@ -82,7 +82,6 @@ class TeamController {
             const userID = req.user._id;
             const teams = await TeamModel.find({ 
                 $or: [{ leader: userID }, { users: userID }]
-
             })
 
             return res.status(200).json({
