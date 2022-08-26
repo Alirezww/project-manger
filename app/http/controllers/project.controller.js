@@ -3,10 +3,10 @@ const { ProjectModel } = require("../../models/Project");
 class ProjectController {
     async createProject(req, res, next){
         try{
-            const { title, text } = req.body;
+            const { title, text, image } = req.body;
             const leader = req.user._id;
 
-            const result = await ProjectModel.create({ title, text, leader });
+            const result = await ProjectModel.create({ title, text, leader, image });
             if(!result) throw { status : 400, message : "ایجاد پروژه با خطا مواجه شد." };
 
             return res.status(200).json({

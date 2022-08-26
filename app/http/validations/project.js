@@ -1,4 +1,5 @@
-const { body } = require("express-validator")
+const { body } = require("express-validator");
+const path = require("path");
 
  function createProjectValidator(){
     return [
@@ -9,7 +10,19 @@ const { body } = require("express-validator")
         body('text')
             .notEmpty()
             .isLength({ min : 25 })
-            .withMessage("توضیحات پروژه نمیتواند خالی باشد و حداقل باید 25 کاراکتر باشد.")
+            .withMessage("توضیحات پروژه نمیتواند خالی باشد و حداقل باید 25 کاراکتر باشد."),
+
+        body('image')
+            .custom(async(value,{ req }) => {
+                if(!req.files) throw "تصویر شاخص پروژه را ارسال نمایید";
+ 
+                let image = req.files.image
+                let type = path.extname(image.name);
+                if(![".png", ".jpg", ".jpeg", ".webp", ".gif"].includes(type)) "فرمت ارسال شده ی تصویر صحیح نمیباشد";
+
+                return true
+
+            })
     ]
  }
 
