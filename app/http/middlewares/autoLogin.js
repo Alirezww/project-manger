@@ -13,7 +13,7 @@ const checkLogin = async(req, res, next) => {
 
         const reuslt = jwtTokenVerify(token);
         const { username } = reuslt
-        console.log(reuslt)
+
         const user = await UserModel.findOne({ username }, { password : 0 });
         if(!user) throw authError;
 

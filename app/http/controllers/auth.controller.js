@@ -22,7 +22,6 @@ class AuthController {
 
     async login(req, res, next){
         try{
-            console.log(req.headers)
             const { username, password } = req.body
             const user = await UserModel.findOne({ username });
             if(!user) throw {status : 401,message : 'نام کاربری یا رمز عبور غلط می باشد.' };

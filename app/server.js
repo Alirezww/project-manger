@@ -28,7 +28,7 @@ module.exports = class Application {
     }
 
     async configDataBase(DB_URL){
-    const mongoose = require("mongoose")
+        const mongoose = require("mongoose")
         try{
             const DBconnection = await mongoose.connect(DB_URL)
             console.log(`MongoDb connected : ${DBconnection.connection.host}`)
