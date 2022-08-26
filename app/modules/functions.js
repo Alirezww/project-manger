@@ -14,6 +14,10 @@ function createUploadPath(){
     return path.join("public", "upload", Year, Month, day);
 }
 
+function generateImageLink(imagePath, req){
+    return (req.protocol + "://" + req.get("host") + "/" + (imagePath.replace(/[\\\\]/gm, "/")))
+}
+
 const hashString = (str) => {
     const salt = bcrypt.genSaltSync(10);
     return bcrypt.hashSync(str, salt)
@@ -34,5 +38,6 @@ module.exports = {
     hashString,
     tokenGenerator,
     jwtTokenVerify,
-    createUploadPath
+    createUploadPath,
+    generateImageLink
 }
