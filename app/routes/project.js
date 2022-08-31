@@ -11,6 +11,13 @@ router.post("/create", fileUpload() ,checkLogin , createProjectValidator() , exp
 
 router.get("/list", checkLogin,ProjectController.getAllProject);
 
+router.get("/:id", checkLogin,ProjectController.getProjectById);
+
+router.get("/remove/:id", checkLogin,ProjectController.removeProject);
+
+router.get("/edit/:id", checkLogin,ProjectController.updateProject);
+
+
 module.exports = {
     projectRoutes : router 
 }
