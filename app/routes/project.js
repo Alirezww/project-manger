@@ -16,8 +16,7 @@ router.get("/:id", checkLogin, mongoIDValidator(), expressValidatorMapper ,Proje
 
 router.delete("/remove/:id", checkLogin, mongoIDValidator(), expressValidatorMapper ,ProjectController.removeProject);
 
-router.get("/edit/:id", checkLogin,ProjectController.updateProject);
-
+router.put("/edit/:id", checkLogin, mongoIDValidator(),ProjectController.updateProject);
 
 module.exports = {
     projectRoutes : router 

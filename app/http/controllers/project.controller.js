@@ -68,8 +68,40 @@ class ProjectController {
 
     }
 
-    updateProject(){
+    async updateProject(req, res, next){
+        try{
+            const leader = req.user._id;
+            const projectID = req.params.id;
+            const project = await this.findProject(projectID, leader);
 
+            const data = {...req.body};
+            const fields = ['title', 'text', 'tags'];
+            let badValue = ["", " ", null, undefined, NaN, 0, -1, {}, []];
+
+            Object.entries(data).forEach(([key, value]) => {
+                if(!fields.includes(key)) delete data[key];
+                if(badValue.includes(value)) delete data[key];
+                if(key == "tags" && (data['tags'].constructor === Array)){
+                    
+                    data["tags"] = data["tags"].filter(val => {
+                        if(!badValue.includes(val)) return val;
+                    });
+
+                    if(data["tags"].length == 0) delete data["tags"]
+                }
+            })
+
+            const updatedResult = await ProjectModel.updateOne( { _id : project._id } , { $set : data } );
+            if(updatedResult.modifiedCount == 0) throw { staus : 400, message : 'بروزرسانی انجام نشد!!' }
+
+            return res.status(200).json({
+                status : 200,
+                success : true,
+                message : "بروزرسانی با موفقیت انجام شد."
+            })
+        }catch(err){
+            next(err)
+        }
     }
 
     async removeProject(req, res, next){
