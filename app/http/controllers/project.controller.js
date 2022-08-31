@@ -34,7 +34,6 @@ class ProjectController {
         }
     }
 
-
     async findProject(projectID, leader) {
         const project = await ProjectModel.findOne({ leader, _id : projectID });
         if(!project) throw { status : 404, message : "پروژه ای یافت نشد!!" };
