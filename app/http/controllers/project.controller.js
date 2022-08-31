@@ -1,5 +1,6 @@
 const autoBind = require("auto-bind");
 const { ProjectModel } = require("../../models/Project");
+const { generateImageLink } = require("../../modules/functions");
 
 class ProjectController {
     constructor() {
@@ -26,8 +27,11 @@ class ProjectController {
     async getAllProject(req, res, next){
         try{
             const leader = req.user;
-
             const projects = await ProjectModel.find({ leader });
+
+            for (const project of projects) {
+                project.image = generateImageLink(project.image, req)
+            }
             return res.status(200).json({
                 success : true,
                 status : 200,
@@ -49,6 +53,7 @@ class ProjectController {
             const leader = req.user._id;
             const projectID = req.params.id;
             const project = await this.findProject(projectID, leader);
+            project.image = generateImageLink(project.image, req)
 
             return res.status(200).json({
                 status : 200,
@@ -60,12 +65,8 @@ class ProjectController {
         }
     }
 
-    getAllProjectOfTeam(){
+    async getAllProjectOfTeam(req, res, next){
         
-    }
-
-    getProjectOfUser(){
-
     }
 
     async updateProject(req, res, next){
@@ -92,7 +93,7 @@ class ProjectController {
             })
 
             const updatedResult = await ProjectModel.updateOne( { _id : project._id } , { $set : data } );
-            if(updatedResult.modifiedCount == 0) throw { staus : 400, message : 'بروزرسانی انجام نشد!!' }
+            if(updatedResult.modifiedCount == 0) throw { status : 400, message : 'بروزرسانی انجام نشد!!' }
 
             return res.status(200).json({
                 status : 200,
@@ -101,6 +102,26 @@ class ProjectController {
             })
         }catch(err){
             next(err)
+        }
+    }
+
+    async updateProjectImage(req, res, next){ 
+        try{
+            const { image } = req.body;
+            const leader = req.user._id;
+            const projectID = req.params.id;
+
+            await this.findProject(projectID, leader);
+            const updatedProject = await ProjectModel.updateOne({ _id : projectID }, { $set : { image } });
+            if(updatedProject.modifiedCount == 0) throw { status : 400, message : "تصویر پروژه موردنظر ویرایش نشد." };
+
+            return res.status(200).json({
+                status : 200,
+                success : true,
+                message : "بروزرسانی با موفقیت انجام شد."
+            })
+        }catch(err){
+            next(err);
         }
     }
 

@@ -18,6 +18,8 @@ router.delete("/remove/:id", checkLogin, mongoIDValidator(), expressValidatorMap
 
 router.put("/edit/:id", checkLogin, mongoIDValidator(),ProjectController.updateProject);
 
+router.patch("/edit-projectImage/:id", fileUpload() ,checkLogin , uploadFile,  ProjectController.updateProjectImage);
+
 module.exports = {
     projectRoutes : router 
 } 
