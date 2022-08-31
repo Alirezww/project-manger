@@ -7,6 +7,7 @@ const ProjectSchema = new mongoose.Schema({
     leader : {type : mongoose.Types.ObjectId, required : true},
     team : {type : mongoose.Types.ObjectId},
     Private : {type : Boolean, deafult : true},
+    tags : { type : [String], default :[] }
 } , {timestamps : true }
 )
 

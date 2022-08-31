@@ -12,6 +12,10 @@ const path = require("path");
             .isLength({ min : 25 })
             .withMessage("توضیحات پروژه نمیتواند خالی باشد و حداقل باید 25 کاراکتر باشد."),
 
+        body('tags')
+            .isArray({ min : 0, max:30 })
+            .withMessage("هشتگ های پرورژه نباید بیشتر از 30 تا باشد."),
+
         body('image')
             .custom(async(value,{ req }) => {
                 if(!req.files) throw "تصویر شاخص پروژه را ارسال نمایید";
