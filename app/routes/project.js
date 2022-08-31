@@ -14,7 +14,7 @@ router.get("/list", checkLogin,ProjectController.getAllProject);
 
 router.get("/:id", checkLogin, mongoIDValidator(), expressValidatorMapper ,ProjectController.getProjectById);
 
-router.get("/remove/:id", checkLogin, mongoIDValidator(), expressValidatorMapper ,ProjectController.removeProject);
+router.delete("/remove/:id", checkLogin, mongoIDValidator(), expressValidatorMapper ,ProjectController.removeProject);
 
 router.get("/edit/:id", checkLogin,ProjectController.updateProject);
 

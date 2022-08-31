@@ -7,3 +7,18 @@ Authorization: Bearer {{$dotenv TOKEN}}
     "title" : "title of new prject",
     "text" : "text of new prject aisdkhl;sakdjsakldh asdjk;askfj;dlkfjsd;kljf;lsdkjf"
 }
+
+###create all projects
+GET  http://localhost:4000/project/list
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}
+
+###get project by id
+GET  http://localhost:4000/project/630f4a049d85b52ac7385ec7
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}
+
+###remove project by id
+DELETE   http://localhost:4000/project/list
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}
