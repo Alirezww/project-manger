@@ -9,7 +9,7 @@ const router = require('express').Router();
 
 router.post("/create", fileUpload() ,checkLogin , createProjectValidator() , expressValidatorMapper, uploadFile,  ProjectController.createProject);
 
-router.get("/list", ProjectController.getAllProject);
+router.get("/list", checkLogin,ProjectController.getAllProject);
 
 module.exports = {
     projectRoutes : router 

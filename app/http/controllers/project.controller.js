@@ -22,6 +22,7 @@ class ProjectController {
     async getAllProject(req, res, next){
         try{
             const leader = req.user;
+
             const projects = await ProjectModel.find({ leader });
             return res.status(200).json({
                 success : true,
