@@ -9,18 +9,18 @@ Authorization: Bearer {{$dotenv TOKEN}}
     "username" : "Eagles"
 }
 
-###create all teams
+###get all teams
 GET  http://localhost:4000/team/list
 Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
 ###get team by id
-GET  http://localhost:4000/team/630f52dac7531e04454805ac
+GET  http://localhost:4000/team/631090ca29142f572fc20233
 Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
 ###remove team by id
-DELETE   http://localhost:4000/team/remove/630f52dac7531e04454805ac
+DELETE   http://localhost:4000/team/remove/631090ca29142f572fc20233
 Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 

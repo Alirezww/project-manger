@@ -1,6 +1,10 @@
+const autoBind = require("auto-bind");
 const { TeamModel } = require("../../models/Team");
 
 class TeamController {
+    constructor() {
+        autoBind(this)
+    }
 
     async createTeam(req, res, next) {
         try{
@@ -34,11 +38,46 @@ class TeamController {
         }
     }
 
-    inviteUserToTeam() {
-
+    async findTeam (teamID){
+        const team = await TeamModel.findById(teamID);
+        if(!team) throw { status : 400, message : "تیم مورد نظر پیدا نشد!!" };
+        return team;
     }
 
-    removeTeamById() {
+    async getTeamById(req, res, next) {
+        try{
+            const teamID = req.params.id;
+            const team = await this.findTeam(teamID)
+
+            return res.status(200).json({
+                status : 200,
+                success : true,
+                team
+            });
+        }catch(err){
+            next(err)
+        }
+    }
+
+    async removeTeamById(req, res, next) {
+        try{
+            const teamID = req.params.id;
+            const team = await this.findTeam(teamID)
+
+            const deletedTeam = await TeamModel.deleteOne({ _id : teamID });
+            if(deletedTeam.deletedCount == 0) throw { status : 400, meesage : "حذف تیم با شکست مواجه شد." };
+
+            return res.status(200).json({
+                status : 200,
+                success : true,
+                message : "تیم مورد نظر با موفقیت حذف شد."
+            });
+        }catch(err){
+            next(err)
+        }
+    }
+
+    inviteUserToTeam() {
 
     }
 
