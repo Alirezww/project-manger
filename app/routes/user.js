@@ -12,7 +12,9 @@ router.post("/profile-image",
     upload_multer.single("image"),
     imageValidator(), expressValidatorMapper,
     checkLogin, UserController.uploadProfileImage
-)
+);
+
+router.get("/requests", checkLogin, UserController.getAllRequest)
 
 module.exports = {
     userRoutes : router

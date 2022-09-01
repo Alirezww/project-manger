@@ -69,6 +69,21 @@ class UserController {
         }
     }
 
+    async getAllRequest(req, res, next){
+        try{
+            const userID = req.user._id;
+            const { inviteRequests } = await UserModel.findById(userID, { inviteRequests : 1 });
+
+            return res.status(200).json({
+                success : true,
+                status : 200,
+                requests : inviteRequests || []
+            })
+        }catch(err){
+            next(err)
+        }
+    }
+
     addSkills(){
 
     }

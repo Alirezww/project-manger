@@ -12,3 +12,7 @@ Content-Type: application/json
     "last_name" : "talebi",
     "skills" : ["programming", "nodejs", "express"]
 }
+
+### get user requests
+GET  http://localhost:4000/user/requests
+Authorization: Bearer {{$dotenv TOKEN}}
