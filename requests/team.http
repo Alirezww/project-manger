@@ -1,0 +1,36 @@
+###create team
+Post http://localhost:4000/team/create
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}
+
+{
+    "name" : "عقابان",
+    "description" : "text of new team aisdkhl;sakdjsakldh asdjk;askfj;dlkfjsd;kljf;lsdkjf",
+    "username" : "Eagles"
+}
+
+###create all teams
+GET  http://localhost:4000/team/list
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}
+
+###get team by id
+GET  http://localhost:4000/team/630f52dac7531e04454805ac
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}
+
+###remove team by id
+DELETE   http://localhost:4000/team/remove/630f52dac7531e04454805ac
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}
+
+###edit team by id
+put   http://localhost:4000/team/edit/630f52dac7531e04454805ac
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}
+
+{
+    "title" : "",
+    "text" : "",
+    "tags" : ["", ""]
+}
