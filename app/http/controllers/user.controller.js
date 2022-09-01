@@ -84,6 +84,30 @@ class UserController {
         }
     }
 
+    async getAcceptedRequests(req, res, next){
+        try{
+
+        }catch(err){
+            next(err)
+        }
+    }
+
+    async getRejectedRequests(req, res, next){
+        try{
+
+        }catch(err){
+            next(err)
+        }
+    }
+
+    async getPendingRequests(req, res, next){
+        try{
+
+        }catch(err){
+            next(err)
+        }
+    }   
+     
     addSkills(){
 
     }
