@@ -4,9 +4,9 @@ Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
 {
-    "name" : "آسمانی ها",
-    "description" : "wa are so close to GOD",
-    "username" : "Angles"
+    "name" : "city men",
+    "description" : "wa are the best team!!!",
+    "username" : "gentelmens"
 }
 
 ###get all teams
@@ -15,7 +15,7 @@ Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
 ###get team by id
-GET  http://localhost:4000/team/63109754b506aa79310f4633
+GET  http://localhost:4000/team/6311332c106faf39b79f0a9f
 Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
@@ -25,7 +25,7 @@ Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
 ###remove team by id
-DELETE   http://localhost:4000/team/remove/631090ca29142f572fc20233
+DELETE   http://localhost:4000/team/remove/631097abb506aa79310f463d
 Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
@@ -35,7 +35,12 @@ Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
 {
-    "title" : "",
-    "text" : "",
-    "tags" : ["", ""]
+    "name" : "city men",
+    "description" : "wa are the best team!!!",
+    "username" : "gentelmens"
 }
+
+###invite user to team
+GET  http://localhost:4000/team/invite/6311332c106faf39b79f0a9f/erfanuaefi
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}

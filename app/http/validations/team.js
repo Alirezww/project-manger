@@ -17,6 +17,28 @@ function teamCreateValidator () {
     ]
 }
 
+// function inviteToTeamValidator () {
+//     return [
+//         param("teamID").custom(async(teamID, { req }) => {
+//             const userID = req.user._id;
+//             const team = await TeamModel.findOne({
+//                 $or : [ { leader : userID }, { users : userID } ]
+//                 , _id : teamID
+//             })
+//             if(!team) throw { status : 400, message : "تیمی جهت دعوت کردن افراد یافت نشد!!" };
+
+//             return true;
+//         }),
+
+//         param("username").custom(async(username, ctx) => {
+//             const user = await UserModel.findOne({ username });
+//             if(!user) throw { status : 400, message : "کاربر موردنظر جهت دعوت به تیم یافت نشد!!" };
+
+//             return true;
+//         })
+//     ]
+// }
+
 module.exports = {
     teamCreateValidator
 }

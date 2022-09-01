@@ -1,5 +1,6 @@
 const autoBind = require("auto-bind");
 const { TeamModel } = require("../../models/Team");
+const { UserModel } = require("../../models/User");
 
 class TeamController {
     constructor() {
@@ -95,13 +96,56 @@ class TeamController {
         }
     }
 
-    async inviteUserToTeam(req, res, next) {
-        try{
-            
-        }catch(err){
-            next(err)
+    async findUserInTeam(teamID, userID) {
+        const result = await TeamModel.findOne({
+          $or: [{ leader: userID }, { users: userID }],
+          _id: teamID,
+        });
+        return !!result;
+      }
+      //http:anything.com/team/invite/:teamID/:username
+      async inviteUserToTeam(req, res, next) {
+        try {
+          const userID = req.user._id;
+          const { username, teamID } = req.params;
+          const team = await this.findUserInTeam(teamID, userID);
+          if (!team)
+            throw { status: 400, message: "تیمی جهت دعوت کردن افراد یافت نشد" };
+          const user = await UserModel.findOne({ username });
+          if (!user)
+            throw {
+              status: 400,
+              message: "کاربر مورد نظر جهت دعوت به تیم یافت نشد",
+            };
+          const userInvited = await this.findUserInTeam(teamID, user._id);
+          if (userInvited)
+            throw {
+              status: 400,
+              message: "کاربر مورد نظر قبلا به تیم دعوت شده است",
+            };
+          const request = {
+            caller: req.user.username,
+            requestDate: new Date(),
+            teamID,
+            status: "pending",
+          };
+          const updateUserResult = await UserModel.updateOne(
+            { username },
+            {
+              $push: { inviteRequests: request },
+            }
+          );
+          if (updateUserResult.modifiedCount == 0)
+            throw { status: 500, message: "ثبت درخواست دعوت ثبت نشد" };
+          return res.status(200).json({
+            status: 200,
+            success: true,
+            message: "ثبت درخواست با موفقیت ایجاد شد",
+          });
+        } catch (error) {
+          next(error);
         }
-    }
+      }
 
     updateTeam(){
 
