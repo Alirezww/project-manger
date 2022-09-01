@@ -95,8 +95,12 @@ class TeamController {
         }
     }
 
-    inviteUserToTeam() {
-
+    async inviteUserToTeam(req, res, next) {
+        try{
+            
+        }catch(err){
+            next(err)
+        }
     }
 
     updateTeam(){
