@@ -62,7 +62,7 @@ class TeamController {
     async removeTeamById(req, res, next) {
         try{
             const teamID = req.params.id;
-            const team = await this.findTeam(teamID)
+            await this.findTeam(teamID)
 
             const deletedTeam = await TeamModel.deleteOne({ _id : teamID });
             if(deletedTeam.deletedCount == 0) throw { status : 400, meesage : "حذف تیم با شکست مواجه شد." };
@@ -72,6 +72,25 @@ class TeamController {
                 success : true,
                 message : "تیم مورد نظر با موفقیت حذف شد."
             });
+        }catch(err){
+            next(err)
+        }
+    }
+
+    async getMyTeams(req, res, next) {
+        try{
+            const userID = req.user._id;
+            const teams = await TeamModel.find({ 
+                $or: [{ leader: userID }, { users: userID }]
+
+            })
+
+            return res.status(200).json({
+                status : 200,
+                success : true,
+                teams
+            })
+
         }catch(err){
             next(err)
         }

@@ -10,9 +10,11 @@ router.post("/create", checkLogin,teamCreateValidator(), expressValidatorMapper,
 
 router.get("/list", checkLogin, TeamController.getListOfTeams);
 
-router.get("/:id", checkLogin, mongoIDValidator(), expressValidatorMapper , TeamController.getTeamById);
+router.get("/me", checkLogin, TeamController.getMyTeams);
 
 router.delete("/remove/:id", checkLogin, mongoIDValidator(), expressValidatorMapper ,TeamController.removeTeamById);
+
+router.get("/:id", checkLogin, mongoIDValidator(), expressValidatorMapper , TeamController.getTeamById);
 
 module.exports = {
     teamRoutes : router

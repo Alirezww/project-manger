@@ -4,9 +4,9 @@ Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
 {
-    "name" : "عقابان",
-    "description" : "text of new team aisdkhl;sakdjsakldh asdjk;askfj;dlkfjsd;kljf;lsdkjf",
-    "username" : "Eagles"
+    "name" : "آسمانی ها",
+    "description" : "wa are so close to GOD",
+    "username" : "Angles"
 }
 
 ###get all teams
@@ -15,7 +15,12 @@ Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
 ###get team by id
-GET  http://localhost:4000/team/631090ca29142f572fc20233
+GET  http://localhost:4000/team/63109754b506aa79310f4633
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}
+
+###get my teams
+GET  http://localhost:4000/team/me
 Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
