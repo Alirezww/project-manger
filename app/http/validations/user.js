@@ -18,6 +18,13 @@ function imageValidator() {
     ]
 }
 
+function addSkillsValidator(){
+    return [
+        body("skills").isArray({ min : 1, max : 20}).withMessage("مهارت های وارد شده نباید از یکی کمتر و از 20 تا بیشتر باشد.")
+    ]
+}
+
 module.exports = {
-    imageValidator
+    imageValidator,
+    addSkillsValidator
 }

@@ -44,8 +44,6 @@ class UserController {
                 if(badValue.includes(value)) delete data[key];
             });
 
-            console.log(data);
-
             const result = await UserModel.updateOne({ _id : userID }, { $set : data } );
             if(result.modifiedCount > 0){
                 return res.status(200).json({
@@ -156,12 +154,22 @@ class UserController {
         }
     }
      
-    addSkills(){
+    async addSkills(req, res, next){
+        try{
+            const userID = req.user._id;
+            const { skills } = req.body
 
-    }
+            const updateUserResult = await UserModel.updateOne({ _id : userID }, { $set : { skills : skills } });
+            if(updateUserResult.modifiedCount == 0) throw { status : 500, message : "اضافه کردن مهارت ها به پروفایل با موفقیت انجام نشد." };
 
-    editSkills(){
-
+            return res.status(200).json({
+                status : 200,
+                success : true,
+                message : "مهارت های وارد شده با موفقیت ثبت گردید."
+            })
+        }catch(err){
+            next(err)
+        }
     }
 
     async changeStatusRequest(req, res, next){

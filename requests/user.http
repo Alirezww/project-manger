@@ -8,9 +8,18 @@ Authorization: Bearer {{$dotenv TOKEN}}
 Content-Type: application/json
 
 {
-    "first_name" : "mmd",
+    "first_name" : "alireza",
     "last_name" : "talebi",
-    "skills" : ["programming", "nodejs", "express"]
+    "skills" : ["programming", "express"]
+}
+
+### add skills
+POST http://localhost:4000/user/add-skills
+Authorization: Bearer {{$dotenv TOKEN}}
+Content-Type: application/json
+
+{
+    "skills" : []
 }
 
 ### get user requests
