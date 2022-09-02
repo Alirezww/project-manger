@@ -232,9 +232,28 @@ class TeamController {
         next(error);
       }
     }
+    //http:anything.com/team/remove/:teamID/:username
+    async removeUserFromTeam(req, res, next){
+        try{
+          const userID = req.user._id;
+          const { teamID, username } = req.params;
+          const team = await this.findUserInTeam(teamID, userID);
+          if(!team) throw { status : 400, message : "تیم مورد نظر پیدا نشد!" };
 
-    removeUserFromTeam(){
-        
+          const user = await UserModel.findOne({ username });
+          if(!user) throw { status : 400, message : "کاربر مورد نظر برای حذف کردن پیدا نشد." };
+
+          const updateTeamResult = await TeamModel.updateOne( { _id : teamID }, { $pull : { users : user._id } } );
+          if(updateTeamResult.modifiedCount == 0) throw { status : 500, message : "حذف کاربر از تیم با مشکل مواجه شد." };
+
+          return res.status(200).json({
+            status : 200,
+            success : true,
+            message : "کاربر مورد نظر با موفقیت از تیم حذف شد"
+          })
+        }catch(err){
+          next(err)
+        }
     }
 }   
 

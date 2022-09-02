@@ -43,3 +43,8 @@ Authorization: Bearer {{$dotenv TOKEN}}
 GET  http://localhost:4000/team/invite/63127c436fe0c1468ec4b545/alirezw
 Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
+
+###remove user to team
+GET  http://localhost:4000/team/remove/63127c436fe0c1468ec4b545/alirezw
+Content-Type: application/json
+Authorization: Bearer {{$dotenv TOKEN}}

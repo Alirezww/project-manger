@@ -16,6 +16,8 @@ router.delete("/remove/:id", checkLogin, mongoIDValidator(), expressValidatorMap
 
 router.get("/invite/:teamID/:username", checkLogin, TeamController.inviteUserToTeam);
 
+router.get("/remove/:teamID/:username", checkLogin, TeamController.removeUserFromTeam);
+
 router.put("/update/:teamID", checkLogin, TeamController.updateTeam);
 
 router.get("/:id", checkLogin, mongoIDValidator(), expressValidatorMapper , TeamController.getTeamById);
