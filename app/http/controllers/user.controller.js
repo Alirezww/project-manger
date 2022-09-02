@@ -72,12 +72,35 @@ class UserController {
     async getAllRequest(req, res, next){
         try{
             const userID = req.user._id;
-            const { inviteRequests } = await UserModel.findById(userID, { inviteRequests : 1 });
+            
+            const requests = await UserModel.aggregate([
+                {
+                    $match : { _id : userID }
+                },
+                {
+                    $lookup : {
+                        from : "users",
+                        localField : "inviteRequests.caller",
+                        foreignField : "username",
+                        as : "inviteRequests.caller"
+                    }
+                },
+                {
+                    $project : {
+                        "inviteRequests.caller.mobile" : 1,
+                        "inviteRequests.caller.email" : 1,
+                        "inviteRequests.caller.username" : 1
+                    }
+                },
+                {
+                    $unwind : "$inviteRequests.caller" 
+                }
+            ])
 
             return res.status(200).json({
                 success : true,
                 status : 200,
-                requests : inviteRequests || []
+                requests
             })
         }catch(err){
             next(err)
