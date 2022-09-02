@@ -16,6 +16,8 @@ router.post("/profile-image",
 
 router.get("/requests", checkLogin, UserController.getAllRequest)
 
+router.get("/requests/:status", checkLogin, UserController.getRequestsByStatus)
+
 module.exports = {
     userRoutes : router
 }
