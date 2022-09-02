@@ -21,6 +21,8 @@ class UserController {
                 }
             ])
 
+            user[0].profile_image = user[0].profile_image ? generateImageLink(user[0].profile_image, req) : user[0].profile_image
+
             return res.status(200).json({
                 status : 200,
                 sucess : true,
