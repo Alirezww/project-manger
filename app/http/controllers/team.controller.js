@@ -13,7 +13,7 @@ class TeamController {
             const leader = req.user._id
 
             const team = TeamModel.create({
-                name, username, description, leader
+                name, username, description, leader, users : leader
             })
             if(!team) throw { status : 500, message : "تیم مورد نظر ایجاد نشد." }
             return res.status(201).json({
@@ -28,7 +28,27 @@ class TeamController {
 
     async getListOfTeams(req, res, next) {
         try{
-            const teams = await TeamModel.find({  });
+            const teams = await TeamModel.aggregate([
+              {
+                $lookup : {
+                  from : "users",
+                  localField : "users",
+                  foreignField : "_id",
+                  as : "users"
+                }
+              },
+              {
+                $lookup : {
+                  from : "users",
+                  localField : "leader",
+                  foreignField : "_id",
+                  as : "leader"
+                }
+              },
+              {
+                $unwind : "$leader"
+              }
+            ]);
             return res.status(200).json({
                 status : 200,
                 success : true,
@@ -96,7 +116,12 @@ class TeamController {
                 }
               },
               {
-                
+                $lookup : {
+                  from : "users",
+                  localField : "users",
+                  foreignField : "_id",
+                  as : "users"
+                }
               },
               {
                 $project : {

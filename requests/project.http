@@ -4,8 +4,8 @@ Content-Type: application/json
 Authorization: Bearer {{$dotenv TOKEN}}
 
 {
-    "title" : "title of new prject",
-    "text" : "text of new prject aisdkhl;sakdjsakldh asdjk;askfj;dlkfjsd;kljf;lsdkjf"
+    "title" : "Eshop",
+    "text" : "we are going to create eshop website"
 }
 
 ###create all projects

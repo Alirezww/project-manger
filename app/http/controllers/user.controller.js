@@ -3,11 +3,23 @@ const { TeamModel } = require("../../models/Team");
 const { generateImageLink } = require("../../modules/functions")
 
 class UserController {
-    getProfile(req, res, next) {
+    async getProfile(req, res, next) {
         try{
-            const user = req.user
+            const userID = req.user._id
 
-            user.profile_image = generateImageLink(user.profile_image, req);
+            const user = await UserModel.aggregate([
+                {
+                    $match : { _id : userID }
+                },
+                {
+                    $lookup : {
+                        from : "teams",
+                        localField : "teams",
+                        foreignField : "_id",
+                        as : "teams"
+                    }
+                }
+            ])
 
             return res.status(200).json({
                 status : 200,
@@ -77,25 +89,25 @@ class UserController {
             const requests = await UserModel.aggregate([
                 {
                     $match : { _id : userID }
-                },
-                {
-                    $lookup : {
-                        from : "users",
-                        localField : "inviteRequests.caller",
-                        foreignField : "username",
-                        as : "inviteRequests.caller"
-                    }
-                },
-                {
-                    $project : {
-                        "inviteRequests.caller.mobile" : 1,
-                        "inviteRequests.caller.email" : 1,
-                        "inviteRequests.caller.username" : 1
-                    }
-                },
-                {
-                    $unwind : "$inviteRequests.caller" 
                 }
+                // {
+                //     $lookup : {
+                //         from : "users",
+                //         localField : "inviteRequests.caller",
+                //         foreignField : "username",
+                //         as : "inviteRequests.caller"
+                //     }
+                // },
+                // {
+                //     $project : {
+                //         "inviteRequests.caller.mobile" : 1,
+                //         "inviteRequests.caller.email" : 1,
+                //         "inviteRequests.caller.username" : 1
+                //     }
+                // },
+                // {
+                //     $unwind : "$inviteRequests.caller" 
+                // }
             ])
 
             return res.status(200).json({
@@ -171,6 +183,9 @@ class UserController {
             if(status == "accepted") {
                 const updateTeamResult = await TeamModel.updateOne({ _id : targetRequest.teamID }, { $push : { users : requestedUser._id } });
                 if(updateTeamResult.modifiedCount == 0) throw { status : 500, message : "اضافه کردن شما به لیست کاربران تیم انجام نشد." };
+
+                const updatedUserResult = await UserModel.updateOne({ _id : requestedUser._id }, { $push : { teams : targetRequest.teamID } });
+                if(updatedUserResult.modifiedCount == 0) throw { status : 500, message : "ویرایش کاربر با موفقیت انجام نشد!" }
             }
 
             return res.status(200).json({

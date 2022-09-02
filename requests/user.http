@@ -22,6 +22,6 @@ GET  http://localhost:4000/user/requests/pending
 Authorization: Bearer {{$dotenv TOKEN}}
 
 ### get chenge status request
-get http://localhost:4000/user/change-status-request/631133aa4a0c650e4385f069/accepted
+get http://localhost:4000/user/change-status-request/63127c6e6fe0c1468ec4b54d/accepted
 Authorization: Bearer {{$dotenv TOKEN}}
 Content-Type: application/json
