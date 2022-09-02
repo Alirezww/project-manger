@@ -1,4 +1,5 @@
-const { UserModel } = require("../../models/User")
+const { UserModel } = require("../../models/User");
+const { TeamModel } = require("../../models/Team");
 const { generateImageLink } = require("../../modules/functions")
 
 class UserController {
@@ -155,10 +156,10 @@ class UserController {
         try{
             const { requestID, status } = req.params;
 
-            const request = await UserModel.findOne({ "inviteRequests._id" : requestID });
-            if(!request) throw { status : 404, message : "درخواست دعوت یافت نشد." };
+            const requestedUser = await UserModel.findOne({ "inviteRequests._id" : requestID });
+            if(!requestedUser) throw { status : 404, message : "درخواست دعوت یافت نشد." };
 
-            const targetRequest = request.inviteRequests.find(item => item.id == requestID )
+            const targetRequest = requestedUser.inviteRequests.find(item => item.id == requestID )
             if(targetRequest.status !== "pending") throw { status : 400, message : "درخواست موردنظر قبلا قبول یا پذیرفته شده است." };
 
             if(!['rejected','accepted'].includes(status)) throw { status : 400, message : "وضعیت درخواست وارد شده معتبر نمی باشد." };
@@ -166,6 +167,11 @@ class UserController {
                 $set : { "inviteRequests.$.status" : status }
             })
             if(updateResult.modifiedCount == 0) throw { status : 500, message : "تغییر وضعیت درخواست انجام نشد." };
+
+            if(status == "accepted") {
+                const updateTeamResult = await TeamModel.updateOne({ _id : targetRequest.teamID }, { $push : { users : requestedUser._id } });
+                if(updateTeamResult.modifiedCount == 0) throw { status : 500, message : "اضافه کردن شما به لیست کاربران تیم انجام نشد." };
+            }
 
             return res.status(200).json({
                 status :200,

@@ -96,13 +96,16 @@ class TeamController {
                 }
               },
               {
+                
+              },
+              {
                 $project : {
-                  "owner.roles" : 0,
-                  "owner.password" : 0,
-                  "owner.token" : 0,
-                  "owner.skills" : 0,
-                  "owner.teams" : 0,
-                  "owner.inviteRequests" : 0
+                  "leader.roles" : 0,
+                  "leader.password" : 0,
+                  "leader.token" : 0,
+                  "leader.skills" : 0,
+                  "leader.teams" : 0,
+                  "leader.inviteRequests" : 0
                 }
               },
               {
