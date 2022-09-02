@@ -24,7 +24,7 @@ class UserController {
             return res.status(200).json({
                 status : 200,
                 sucess : true,
-                user
+                user : user?.[0]
             })
         }catch(err){
             next(err)
