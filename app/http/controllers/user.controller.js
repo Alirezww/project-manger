@@ -130,24 +130,24 @@ class UserController {
 
     async changeStatusRequest(req, res, next){
         try{
-            const {id, status} = req.params;
+            const { requestID, status } = req.params;
 
-            const request = await UserModel.findOne({ "inviteRequests._id" : id });
-            if(!request) throw { status : 404, message : "درخواستی با این مشخصات یافت نشد!!" };
+            const request = await UserModel.findOne({ "inviteRequests._id" : requestID });
+            if(!request) throw { status : 404, message : "درخواست دعوت یافت نشد." };
 
-            const findRequest = request.inviteRequests.find(item => item.id == id);
-            if(findRequest.status !== 'pending') throw { status : 400, message : "درخواست قبلا رد یا پذیرفته شده است." };
+            const targetRequest = request.inviteRequests.find(item => item.id == requestID )
+            if(targetRequest.status !== "pending") throw { status : 400, message : "درخواست موردنظر قبلا قبول یا پذیرفته شده است." };
 
-            if(!["accepted", "rejected"].includes(status)) throw { statsus : 400, message : "وضعیت درخواست معتبر نمی باشد." };
-            const updateResult = await UserModel.updateOne({ "inviteRequests._id" : id }, {
+            if(!['rejected','accepted'].includes(status)) throw { status : 400, message : "وضعیت درخواست وارد شده معتبر نمی باشد." };
+            const updateResult = await UserModel.updateOne({ "inviteRequests._id" : requestID }, { 
                 $set : { "inviteRequests.$.status" : status }
-            });
-            if(updateResult.modifiedCount == 0) throw { status : 500, message : "تغییر وضعیت درخواست با موفقیت انجام نشد." };
+            })
+            if(updateResult.modifiedCount == 0) throw { status : 500, message : "تغییر وضعیت درخواست انجام نشد." };
 
             return res.status(200).json({
                 status :200,
                 success : true,
-                message : "تغییر وضعیت درخواست دعوت شما با موفقیت انجام شد."
+                message : "تغییر درخواست با موفقیت انجام شد."
             })
 
         }catch(err){
